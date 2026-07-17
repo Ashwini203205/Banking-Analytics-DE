@@ -458,11 +458,6 @@ Bachelor of Engineering (Information Technology)
 
 Passionate about Data Engineering, Big Data, ETL Pipelines, Cloud Technologies, and Business Intelligence.
 
-GitHub:
-(Add GitHub Link)
-
-LinkedIn:
-(Add LinkedIn Link)
 
 ---
 

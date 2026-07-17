@@ -1,4 +1,4 @@
-# Banking-Analytics-DE"
+# Banking-Analytics-DE
 # 🏦 Banking Analytics Data Engineering Pipeline
 
 > End-to-End Data Engineering Project using PySpark, PostgreSQL, Docker, Apache Airflow, and Power BI

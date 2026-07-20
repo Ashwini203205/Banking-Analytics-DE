@@ -1,5 +1,5 @@
 services:
-  # 1. Your Banking Database
+  # PostgreSQL Database
   postgres:
     image: postgres:15
     container_name: banking_postgres
@@ -18,7 +18,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # 2. Apache Airflow Webserver (The UI Dashboard)
+  # Airflow Webserver
   airflow-webserver:
     build: .
     container_name: airflow_webserver
@@ -34,11 +34,13 @@ services:
       - "8080:8080"
     volumes:
       - ./dags:/opt/airflow/dags
+      - ./spark:/opt/airflow/spark
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
       - ./data:/opt/airflow/data
+      - ./jars:/opt/airflow/jars
 
-  # 3. Apache Airflow Scheduler (The Engine)
+  # Airflow Scheduler
   airflow-scheduler:
     build: .
     container_name: airflow_scheduler
@@ -52,9 +54,11 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
     volumes:
       - ./dags:/opt/airflow/dags
+      - ./spark:/opt/airflow/spark
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
       - ./data:/opt/airflow/data
+      - ./jars:/opt/airflow/jars
 
 volumes:
   pgdata:

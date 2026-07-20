@@ -1,4 +1,4 @@
-SOURCE_FILE = "data/source/bank-full.csv"
+SOURCE_FILE = "/opt/airflow/data/source/bank-full.csv"
 
 BRONZE_TABLE = "bronze.customer_raw"
 

@@ -11,19 +11,51 @@ default_args = {
 }
 
 with DAG(
-    'banking_data_ingestion',
+    dag_id='banking_data_ingestion',
     default_args=default_args,
-    description='Automated pipeline for banking analytics',
-    schedule_interval='@daily',  # Runs once a day automatically
+    description='Banking Analytics ETL Pipeline',
+    schedule_interval='@daily',
     catchup=False,
 ) as dag:
 
-    # Task to execute our python script inside the container
-    run_python_script = BashOperator(
+    test_connection = BashOperator(
         task_id='run_test_connection',
-        bash_command='python /opt/airflow/dags/test_connection.py', 
-        # Note: In a production environment, you would place scripts inside the DAG folder 
-        # or build a custom Docker image with your dependencies installed.
+        bash_command='python /opt/airflow/dags/test_connection.py'
     )
 
-    run_python_script
+    bronze = BashOperator(
+        task_id='load_bronze',
+        bash_command='python /opt/airflow/spark/load_bronze.py'
+    )
+
+    silver = BashOperator(
+        task_id='load_silver',
+        bash_command='python /opt/airflow/spark/load_silver.py'
+    )
+
+    customer = BashOperator(
+        task_id='gold_customer',
+        bash_command='python /opt/airflow/spark/load_gold_customer.py'
+    )
+
+    job = BashOperator(
+        task_id='gold_job',
+        bash_command='python /opt/airflow/spark/load_gold_job.py'
+    )
+
+    education = BashOperator(
+        task_id='gold_education',
+        bash_command='python /opt/airflow/spark/load_gold_education.py'
+    )
+
+    marital = BashOperator(
+        task_id='gold_marital',
+        bash_command='python /opt/airflow/spark/load_gold_marital.py'
+    )
+
+    month = BashOperator(
+        task_id='gold_month',
+        bash_command='python /opt/airflow/spark/load_gold_month.py'
+    )
+
+    test_connection >> bronze >> silver >> customer >> job >> education >> marital >> month
